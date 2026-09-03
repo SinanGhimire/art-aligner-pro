@@ -10,33 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AlignerRouteImport } from './routes/aligner'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AlignerRoute = AlignerRouteImport.update({
+  id: '/aligner',
+  path: '/aligner',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/aligner': typeof AlignerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aligner': typeof AlignerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/aligner': typeof AlignerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/aligner'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/aligner'
+  id: '__root__' | '/' | '/aligner'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AlignerRoute: typeof AlignerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aligner': {
+      id: '/aligner'
+      path: '/aligner'
+      fullPath: '/aligner'
+      preLoaderRoute: typeof AlignerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AlignerRoute: AlignerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
